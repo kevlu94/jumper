@@ -30,7 +30,8 @@ public:
     Scene(Camera *camera, GLuint program);
     ~Scene();
     
-    void addModel(Model *model);
+    void addModel(Model *model, glm::vec3 position);
+    void addImmovable(Model *immovable, glm::vec3 position);
     void update();
     void draw();
     glm::mat4 MVP(Model *model) const { return projection() * view() * model->model(); }
@@ -51,8 +52,10 @@ private:
     glm::mat4 m_projection_matrix;
     Camera *m_camera;
     std::vector<Model*> m_models;
+    std::vector<Model*> m_immovables;
     
     dWorldID m_worldID;
+    dSpaceID m_spaceID;
 };
 
 

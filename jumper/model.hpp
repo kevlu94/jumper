@@ -11,12 +11,12 @@ class Model
 {
 public:
     Model() {}
-    virtual ~Model() {}
+    virtual ~Model();
 
 
     unsigned long numVertices() { return m_numVertices; }
     glm::mat4 model() const;
-    void addBodyToWorld(dWorldID worldID);
+    void addBodyToWorld(dWorldID worldID, glm::vec3 position);
     void removeBodyFromWorld();
     
     virtual bool colored() const = 0;
@@ -44,7 +44,15 @@ public:
 protected:
     // ODE fields not set until model is added to a scene
     dBodyID m_bodyID = 0;
+    dGeomID m_geomID = 0;
+    
     dMass m_mass;
+    dReal m_density = 0;
+    dReal m_xSize = 0;
+    dReal m_ySize = 0;
+    dReal m_zSize = 0;
+    
+    
     
     unsigned long m_numVertices = 0;
     GLuint m_positionVBO = 0;

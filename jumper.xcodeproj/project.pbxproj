@@ -11,7 +11,8 @@
 		AA17BC6F1AF876CC007FBBE8 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC6D1AF876CC007FBBE8 /* shader.cpp */; };
 		AA17BC721AF87737007FBBE8 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC701AF87737007FBBE8 /* camera.cpp */; };
 		AA17BC761AF87806007FBBE8 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC741AF87806007FBBE8 /* model.cpp */; };
-		AA17BC791AF8A62F007FBBE8 /* cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC771AF8A62F007FBBE8 /* cube.cpp */; };
+		AA17BC821AF9BAA2007FBBE8 /* objects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC801AF9BAA2007FBBE8 /* objects.cpp */; };
+		AA17BC851AF9BC00007FBBE8 /* shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA17BC831AF9BC00007FBBE8 /* shapes.cpp */; };
 		AAEC325E1AF83A8B00CF91C5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEC325D1AF83A8B00CF91C5 /* main.cpp */; };
 		AAEC32651AF83E9400CF91C5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAEC32641AF83E9400CF91C5 /* CoreGraphics.framework */; };
 		AAEC32671AF83E9E00CF91C5 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAEC32661AF83E9E00CF91C5 /* CoreFoundation.framework */; };
@@ -43,8 +44,10 @@
 		AA17BC731AF8776C007FBBE8 /* globals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = globals.hpp; sourceTree = "<group>"; };
 		AA17BC741AF87806007FBBE8 /* model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
 		AA17BC751AF87806007FBBE8 /* model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
-		AA17BC771AF8A62F007FBBE8 /* cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cube.cpp; sourceTree = "<group>"; };
-		AA17BC781AF8A62F007FBBE8 /* cube.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cube.hpp; sourceTree = "<group>"; };
+		AA17BC801AF9BAA2007FBBE8 /* objects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = objects.cpp; sourceTree = "<group>"; };
+		AA17BC811AF9BAA2007FBBE8 /* objects.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = objects.hpp; sourceTree = "<group>"; };
+		AA17BC831AF9BC00007FBBE8 /* shapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shapes.cpp; sourceTree = "<group>"; };
+		AA17BC841AF9BC00007FBBE8 /* shapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = shapes.hpp; sourceTree = "<group>"; };
 		AAEC325A1AF83A8B00CF91C5 /* jumper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jumper; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAEC325D1AF83A8B00CF91C5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AAEC32641AF83E9400CF91C5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -101,10 +104,12 @@
 			children = (
 				AAEC325D1AF83A8B00CF91C5 /* main.cpp */,
 				AA17BC6D1AF876CC007FBBE8 /* shader.cpp */,
-				AA17BC771AF8A62F007FBBE8 /* cube.cpp */,
-				AA17BC781AF8A62F007FBBE8 /* cube.hpp */,
 				AA17BC6E1AF876CC007FBBE8 /* shader.hpp */,
 				AA17BC6A1AF87601007FBBE8 /* scene.cpp */,
+				AA17BC801AF9BAA2007FBBE8 /* objects.cpp */,
+				AA17BC831AF9BC00007FBBE8 /* shapes.cpp */,
+				AA17BC841AF9BC00007FBBE8 /* shapes.hpp */,
+				AA17BC811AF9BAA2007FBBE8 /* objects.hpp */,
 				AA17BC731AF8776C007FBBE8 /* globals.hpp */,
 				AA17BC701AF87737007FBBE8 /* camera.cpp */,
 				AA17BC741AF87806007FBBE8 /* model.cpp */,
@@ -184,10 +189,11 @@
 			files = (
 				AA17BC761AF87806007FBBE8 /* model.cpp in Sources */,
 				AA17BC721AF87737007FBBE8 /* camera.cpp in Sources */,
-				AA17BC791AF8A62F007FBBE8 /* cube.cpp in Sources */,
 				AA17BC6F1AF876CC007FBBE8 /* shader.cpp in Sources */,
 				AA17BC6C1AF87602007FBBE8 /* scene.cpp in Sources */,
+				AA17BC821AF9BAA2007FBBE8 /* objects.cpp in Sources */,
 				AAEC325E1AF83A8B00CF91C5 /* main.cpp in Sources */,
+				AA17BC851AF9BC00007FBBE8 /* shapes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

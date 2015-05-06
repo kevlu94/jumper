@@ -10,6 +10,13 @@
 
 using namespace std;
 
+Model::~Model()
+{
+    if (m_bodyID)
+        dBodyDestroy(m_bodyID);
+    if (m_geomID)
+        dGeomDestroy(m_geomID);
+}
 
 glm::mat4 Model::model() const
 {
@@ -20,17 +27,16 @@ glm::mat4 Model::model() const
     
 }
 
-void Model::addBodyToWorld(dWorldID worldID)
+void Model::addBodyToWorld(dWorldID worldID, glm::vec3 position)
 {
     m_bodyID = dBodyCreate(worldID);
-    dMassSetBox(&m_mass, 1.0f, 1.0f, 1.0f, 1.0f);
     dBodySetMass(m_bodyID, &m_mass);
-    dBodySetPosition(m_bodyID, 0.0f, 0.0f, 0.0f);
+    dBodySetPosition(m_bodyID, position[0], position[1], position[2]);
 }
 
 void Model::removeBodyFromWorld()
 {
-    dBodyDestroy(m_bodyID);
+    // unimplemented
 }
 
 

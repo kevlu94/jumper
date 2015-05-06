@@ -14,6 +14,7 @@ Scene::Scene(Camera *camera, GLuint program)
     dInitODE();
     m_worldID = dWorldCreate();
     dWorldSetGravity(m_worldID, 0.0f, -9.8f, 0.0f);
+    m_spaceID = dHashSpaceCreate(0);
 }
 
 Scene::~Scene()
@@ -24,13 +25,20 @@ Scene::~Scene()
         m_models.pop_back();
     }
     dWorldDestroy(m_worldID);
+    dSpaceDestroy(m_spaceID);
     dCloseODE();
 }
 
-void Scene::addModel(Model *model)
+void Scene::addModel(Model *model, glm::vec3 position)
 {
     m_models.push_back(model);
-    model->addBodyToWorld(m_worldID);
+    model->addBodyToWorld(m_worldID, position);
+}
+
+void Scene::addImmovable(Model *immovable, glm::vec3 position)
+{
+    m_immovables.push_back(immovable);
+    immovable->addBodyToWorld(m_worldID, position);
 }
 
 void Scene::moveModel(Model *model)
@@ -58,11 +66,11 @@ void Scene::update()
     
     double curTime = glfwGetTime();
     double dt = curTime - prevTime;
-
+    prevTime = curTime;
     // update the world by the calculated time step
     dWorldStep(m_worldID, dt);
     
-    prevTime = curTime;
+    
 }
 
 void Scene::draw()
