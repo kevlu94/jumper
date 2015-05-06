@@ -100,4 +100,5 @@ dependencies: /Users/myfold/Documents/jumper/jumper/main.cpp \
   /Users/myfold/Documents/jumper/jumper/globals.hpp \
   /Users/myfold/Documents/jumper/jumper/model.hpp \
   /Users/myfold/Documents/jumper/jumper/common/shader.hpp \
-  /Users/myfold/Documents/jumper/jumper/shapes.hpp
+  /Users/myfold/Documents/jumper/jumper/shapes.hpp \
+  /Users/myfold/Documents/jumper/jumper/objects.hpp

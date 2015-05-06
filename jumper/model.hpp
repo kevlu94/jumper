@@ -10,21 +10,20 @@
 class Model
 {
 public:
-    Model() {}
+    Model();
     virtual ~Model();
 
 
     unsigned long numVertices() { return m_numVertices; }
     glm::mat4 model() const;
-    void addBodyToWorld(dWorldID worldID, glm::vec3 position);
-    void removeBodyFromWorld();
-    
+    virtual void addToScene(dWorldID worldID, dSpaceID spaceID, glm::vec3 position) = 0;
+    virtual glm::vec3 position() const = 0;
     virtual bool colored() const = 0;
     virtual bool textured() const = 0;
     
     // accessor functions
     //glm::vec3 position() const { return m_position; }
-    glm::vec3 position() const { return *((glm::vec3*) dBodyGetPosition(m_bodyID)); }
+    
     GLuint positionVBO() const { return m_positionVBO; }
     GLuint colorVBO() const { return m_colorVBO; }
     GLuint textureVBO() const { return m_textureVBO; }
@@ -48,9 +47,7 @@ protected:
     
     dMass m_mass;
     dReal m_density = 0;
-    dReal m_xSize = 0;
-    dReal m_ySize = 0;
-    dReal m_zSize = 0;
+    glm::vec3 m_size;
     
     
     

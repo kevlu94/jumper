@@ -15,47 +15,64 @@ Scene::Scene(Camera *camera, GLuint program)
     m_worldID = dWorldCreate();
     dWorldSetGravity(m_worldID, 0.0f, -9.8f, 0.0f);
     m_spaceID = dHashSpaceCreate(0);
+    m_contactGroupID = dJointGroupCreate(0);
 }
 
 Scene::~Scene()
 {
     while (!m_models.empty())
-    {
-        m_models.back()->removeBodyFromWorld();
         m_models.pop_back();
-    }
     dWorldDestroy(m_worldID);
     dSpaceDestroy(m_spaceID);
+    dJointGroupEmpty(m_contactGroupID);
     dCloseODE();
 }
 
 void Scene::addModel(Model *model, glm::vec3 position)
 {
     m_models.push_back(model);
-    model->addBodyToWorld(m_worldID, position);
-}
-
-void Scene::addImmovable(Model *immovable, glm::vec3 position)
-{
-    m_immovables.push_back(immovable);
-    immovable->addBodyToWorld(m_worldID, position);
+    model->addToScene(m_worldID, m_spaceID, position);
 }
 
 void Scene::moveModel(Model *model)
 {
     // push upward
     if (glfwGetKey( m_window, GLFW_KEY_W ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 0.0f, 20.0f, 0.0f);
+        dBodyAddForce(model->bodyID(), 0.0f, 200.0f, 0.0f);
     }
-    
 }
 
 
- 
+void Scene::nearCallback (dGeomID o1, dGeomID o2)
+{
+    dBodyID b1 = dGeomGetBody(o1);
+    dBodyID b2 = dGeomGetBody(o2);
+    dContact contact;
+    contact.surface.mode = dContactBounce | dContactSoftCFM;
+    // friction parameter
+    contact.surface.mu = dInfinity;
+    // bounce is the amount of "bouncyness".
+    contact.surface.bounce = 0.9;
+    // bounce_vel is the minimum incoming velocity to cause a bounce
+    contact.surface.bounce_vel = 0.1;
+    // constraint force mixing parameter
+    contact.surface.soft_cfm = 0.001;
+    if (dCollide (o1,o2,1,&contact.geom,sizeof(dContact)))
+    {
+        dJointID c = dJointCreateContact (m_worldID, m_contactGroupID, &contact);
+        dJointAttach (c,b1,b2);
+    }
+}
+
+void passthroughCB(void *data, dGeomID o1, dGeomID o2)
+{
+    ((Scene*) data)->nearCallback(o1, o2);
+    
+}
+
 void Scene::update()
 {
-    for (unsigned long i = 0; i < m_models.size(); i++)
-        moveModel(m_models[i]);
+    moveModel(m_models[0]);
     
     static double prevTime = 0.0f;
     if (prevTime == 0.0f) // very first time instant
@@ -67,8 +84,14 @@ void Scene::update()
     double curTime = glfwGetTime();
     double dt = curTime - prevTime;
     prevTime = curTime;
+    
+    // resolve collisions
+    dSpaceCollide (m_spaceID, this, passthroughCB);
+    
     // update the world by the calculated time step
     dWorldStep(m_worldID, dt);
+    
+    dJointGroupEmpty(m_contactGroupID);
     
     
 }

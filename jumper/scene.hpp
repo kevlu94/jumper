@@ -31,7 +31,6 @@ public:
     ~Scene();
     
     void addModel(Model *model, glm::vec3 position);
-    void addImmovable(Model *immovable, glm::vec3 position);
     void update();
     void draw();
     glm::mat4 MVP(Model *model) const { return projection() * view() * model->model(); }
@@ -39,6 +38,8 @@ public:
     glm::mat4 view() const;
     glm::mat4 projection() const { return m_projection_matrix; }
     dWorldID worldID() const { return m_worldID; }
+    
+    void nearCallback(dGeomID o1, dGeomID o2);
     
 private:
     
@@ -56,6 +57,7 @@ private:
     
     dWorldID m_worldID;
     dSpaceID m_spaceID;
+    dJointGroupID m_contactGroupID;
 };
 
 

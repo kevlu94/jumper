@@ -24,7 +24,7 @@ void Camera::move(glm::vec3 distance)
 
 void Camera::update()
 {
-    GLfloat MOVESIZE = 0.05f;
+    GLfloat MOVESIZE = 0.5f;
     
     // Move forward
     if (glfwGetKey( m_window, GLFW_KEY_UP ) == GLFW_PRESS){

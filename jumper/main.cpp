@@ -12,6 +12,7 @@
 #include "globals.hpp"
 #include "model.hpp"
 #include "shapes.hpp"
+#include "objects.hpp"
 
 using namespace glm;
 
@@ -79,13 +80,14 @@ int main()
     glUseProgram(program);
     
     // initialize camera, scene, and objects to draw
-    Camera camera(window, vec3(0,0,20), 0.0f, 0.0f);
+    Camera camera(window, vec3(0,8,20), 0.0f, 0.0f);
     Scene scene(&camera, program);
     
-    Cube cube(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-    Plane plane(1.0f, glm::vec3(0.5f, 0.8f, 0.5f), glm::vec2(100.0f, 100.0f));
-    scene.addModel(&cube, glm::vec3(0.0f, 2.0f, 0.0f));
-    scene.addModel(&plane, glm::vec3(0.0f));
+    ColoredBox box(1.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 2.0f, 1.0f));
+    ColoredImmovableBox ground(glm::vec3(0.4f, 0.8f, 0.5f), glm::vec3(100.0f, 0.0001f, 100.0f));
+    
+    scene.addModel(&box, glm::vec3(0.0f, 2.0f, 0.0f));
+    scene.addModel(&ground, glm::vec3(0.0f));
     
     
     // create vertex array

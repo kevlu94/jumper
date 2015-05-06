@@ -10,6 +10,11 @@
 
 using namespace std;
 
+Model::Model()
+{
+
+}
+
 Model::~Model()
 {
     if (m_bodyID)
@@ -20,24 +25,16 @@ Model::~Model()
 
 glm::mat4 Model::model() const
 {
-    glm::quat quaternion = glm::quat(glm::vec3(m_pitch, m_yaw, m_roll));
-    glm::mat4 rotationMatrix = glm::mat4_cast(quaternion);
+    const dReal *e = dGeomGetRotation(m_geomID);
+    glm::mat4 rotationMatrix = glm::mat4(e[0], e[4], e[8], 0.0f,
+                                         e[1], e[5], e[9], 0.0f,
+                                         e[2], e[6], e[10], 0.0f,
+                                         0.0f, 0.0f, 0.0f, 1.0f);
+                                         
     glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), position());
     return translateMatrix * rotationMatrix;
-    
 }
 
-void Model::addBodyToWorld(dWorldID worldID, glm::vec3 position)
-{
-    m_bodyID = dBodyCreate(worldID);
-    dBodySetMass(m_bodyID, &m_mass);
-    dBodySetPosition(m_bodyID, position[0], position[1], position[2]);
-}
-
-void Model::removeBodyFromWorld()
-{
-    // unimplemented
-}
 
 
 // Private functions
