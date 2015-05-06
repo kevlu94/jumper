@@ -37,7 +37,7 @@ void Scene::addModel(Model *model, glm::vec3 position)
 void Scene::moveModel(Model *model)
 {
     // push upward
-    if (glfwGetKey( m_window, GLFW_KEY_W ) == GLFW_PRESS){
+    if (glfwGetKey( m_window, GLFW_KEY_SPACE ) == GLFW_PRESS){
         dBodyAddForce(model->bodyID(), 0.0f, 200.0f, 0.0f);
     }
 }
