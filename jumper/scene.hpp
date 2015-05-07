@@ -1,24 +1,9 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-// Include standard headers
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
 
-// Include GLEW
-#include <GL/glew.h>
 
-// Include GLFW
-#include <GLFW/glfw3.h>
-
-// Include GLM
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-// Include Open Dynamics Engine
-#include <ode/ode.h>
-
+#include "globals.hpp"
 #include "camera.hpp"
 #include "model.hpp"
 
@@ -31,6 +16,7 @@ public:
     ~Scene();
     
     void addModel(Model *model, glm::vec3 position);
+    void addCreature(Creature *creature, glm::vec3 position);
     void update();
     void draw();
     glm::mat4 MVP(Model *model) const { return projection() * view() * model->model(); }
@@ -38,6 +24,7 @@ public:
     glm::mat4 view() const;
     glm::mat4 projection() const { return m_projection_matrix; }
     dWorldID worldID() const { return m_worldID; }
+    dSpaceID spaceID() const { return m_spaceID; }
     
     void nearCallback(dGeomID o1, dGeomID o2);
     
@@ -53,7 +40,7 @@ private:
     glm::mat4 m_projection_matrix;
     Camera *m_camera;
     std::vector<Model*> m_models;
-    std::vector<Model*> m_immovables;
+    Creature *m_creature;
     
     dWorldID m_worldID;
     dSpaceID m_spaceID;

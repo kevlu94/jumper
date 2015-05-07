@@ -31,39 +31,47 @@ Scene::~Scene()
 void Scene::addModel(Model *model, glm::vec3 position)
 {
     m_models.push_back(model);
-    model->addToScene(m_worldID, m_spaceID, position);
+    model->addToScene(this, position);
+}
+
+void Scene::addCreature(Creature *creature, glm::vec3 position)
+{
+    creature->addToScene(this, position);
+    m_creature = creature;
 }
 
 void Scene::moveModel(Model *model)
 {
+    dReal force = 1000.0f;
+    
     // lift
     if (glfwGetKey( m_window, GLFW_KEY_SPACE ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 0.0f, 200.0f, 0.0f);
+        dBodyAddForce(model->bodyID(), 0.0f, force, 0.0f);
     }
     
     // dunk
     if (glfwGetKey( m_window, GLFW_KEY_E ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 0.0f, -200.0f, 0.0f);
+        dBodyAddForce(model->bodyID(), 0.0f, -force, 0.0f);
     }
     
     // push
     if (glfwGetKey( m_window, GLFW_KEY_W ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 0.0f, 0.0f, -200.0f);
+        dBodyAddForce(model->bodyID(), 0.0f, 0.0f, -force);
     }
     
     // pull
     if (glfwGetKey( m_window, GLFW_KEY_S ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 0.0f, 0.0f, 200.0f);
+        dBodyAddForce(model->bodyID(), 0.0f, 0.0f, force);
     }
     
     // left
     if (glfwGetKey( m_window, GLFW_KEY_A ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), -200.0f, 0.0f, 0.0f);
+        dBodyAddForce(model->bodyID(), -force, 0.0f, 0.0f);
     }
     
     // right
     if (glfwGetKey( m_window, GLFW_KEY_D ) == GLFW_PRESS){
-        dBodyAddForce(model->bodyID(), 200.0f, 0.0f, 0.0f);
+        dBodyAddForce(model->bodyID(), force, 0.0f, 0.0f);
     }
     
     
@@ -97,30 +105,39 @@ void passthroughCB(void *data, dGeomID o1, dGeomID o2)
     
 }
 
+double elapsedTime()
+{
+    static double prevTime = 0.0f;
+    if (prevTime == 0.0f)
+        prevTime = glfwGetTime();
+    double curTime = glfwGetTime();
+    double ret = curTime - prevTime;
+    prevTime = curTime;
+    return ret;
+}
+
 void Scene::update()
 {
-    moveModel(m_models[0]);
+    //moveModel(m_models[0]);
     
-    static double prevTime = 0.0f;
-    if (prevTime == 0.0f) // very first time instant
+    double dt = 0.0025f;
+    double rendertime = elapsedTime();
+    int steps = rendertime / dt + 1;
+    for (int i = 0; i < steps; i++)
     {
-        prevTime = glfwGetTime();
-        return;
+        m_creature->move(m_window);
+        
+        // resolve collisions
+        dSpaceCollide (m_spaceID, this, passthroughCB);
+        // update the world by the calculated time step
+        dWorldStep(m_worldID, dt);
+        // reset contact joints
+        dJointGroupEmpty(m_contactGroupID);
     }
-    
-    double curTime = glfwGetTime();
-    double dt = curTime - prevTime;
-    prevTime = curTime;
-    
-    // resolve collisions
-    dSpaceCollide (m_spaceID, this, passthroughCB);
-    
-    // update the world by the calculated time step
-    dWorldStep(m_worldID, dt);
-    
-    dJointGroupEmpty(m_contactGroupID);
-    
-    
+    double updatetime = elapsedTime();
+    double wait = steps * dt - updatetime - rendertime;
+    if (wait < 0) wait = 0;
+    usleep(wait * 1000000);
 }
 
 void Scene::draw()

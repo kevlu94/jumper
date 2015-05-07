@@ -1,9 +1,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 
 #include "globals.hpp"
 

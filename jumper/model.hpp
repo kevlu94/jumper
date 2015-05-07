@@ -1,11 +1,10 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include <stdio.h>
-#include <vector>
-#include <glm/glm.hpp>
-#include <GLFW/glfw3.h>
-#include <ode/ode.h>
+#include "globals.hpp"
+
+
+class Scene;
 
 class Model
 {
@@ -13,32 +12,23 @@ public:
     Model();
     virtual ~Model();
 
-
     unsigned long numVertices() { return m_numVertices; }
     glm::mat4 model() const;
-    virtual void addToScene(dWorldID worldID, dSpaceID spaceID, glm::vec3 position) = 0;
+    void setAttribute(GLuint program, const GLchar *name, unsigned int size, GLuint vbo) const;
+
+    // pure virtual functions
+    virtual void addToScene(Scene *scene, glm::vec3 position) = 0;
     virtual glm::vec3 position() const = 0;
     virtual bool colored() const = 0;
     virtual bool textured() const = 0;
     
     // accessor functions
-    //glm::vec3 position() const { return m_position; }
-    
+    dReal mass() const { return m_mass.mass; }
     GLuint positionVBO() const { return m_positionVBO; }
     GLuint colorVBO() const { return m_colorVBO; }
     GLuint textureVBO() const { return m_textureVBO; }
     GLuint texture() const { return m_texture; }
     dBodyID bodyID() const { return m_bodyID; }
-    
-    // mutator functions
-    //void shift(glm::vec3 distance) { m_position += distance; }
-    void yawBy(GLfloat angle) { m_yaw = fmod(m_yaw + angle, 2.0 * M_PI); }
-    void pitchBy(GLfloat angle) { m_pitch = fmod(m_pitch + angle, 2.0 * M_PI); }
-    void rollBy(GLfloat angle) { m_roll = fmod(m_roll + angle, 2.0 * M_PI); }
-    void setAttribute(GLuint program, const GLchar *name, unsigned int size, GLuint vbo) const;
-
-    
-    
     
 protected:
     // ODE fields not set until model is added to a scene
@@ -49,20 +39,24 @@ protected:
     dReal m_density = 0;
     glm::vec3 m_size;
     
-    
-    
     unsigned long m_numVertices = 0;
     GLuint m_positionVBO = 0;
     GLuint m_colorVBO = 0;
     GLuint m_textureVBO = 0;
     GLuint m_texture = 0;
-    
-    //glm::vec3 m_position;
-    glm::vec4 m_quaternion;
-    GLfloat m_yaw = 0.0f;
-    GLfloat m_pitch = 0.0f;
-    GLfloat m_roll = 0.0f;
-    
+};
+
+class Creature
+{
+public:
+    Creature(glm::vec3 size): m_size(size) {}
+    virtual ~Creature() {}
+    virtual void addToScene(Scene *scene, glm::vec3 position) = 0;
+    virtual void move(GLFWwindow *window) = 0;
+    glm::vec3 centerOfMass() const;
+protected:
+    glm::vec3 m_size;
+    std::vector<Model*> m_parts;
 };
 
 #endif

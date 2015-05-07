@@ -1,7 +1,25 @@
 dependencies: /Users/myfold/Documents/jumper/jumper/shapes.cpp \
   /Users/myfold/Documents/jumper/jumper/shapes.hpp \
   /Users/myfold/Documents/jumper/jumper/model.hpp \
-  /usr/local/include/glm/glm.hpp \
+  /Users/myfold/Documents/jumper/jumper/globals.hpp \
+  /usr/local/include/ode/ode.h /usr/local/include/ode/odeconfig.h \
+  /usr/local/include/ode/precision.h \
+  /usr/local/include/ode/compatibility.h /usr/local/include/ode/common.h \
+  /usr/local/include/ode/error.h /usr/local/include/ode/odeinit.h \
+  /usr/local/include/ode/contact.h /usr/local/include/ode/memory.h \
+  /usr/local/include/ode/odemath.h \
+  /usr/local/include/ode/odemath_legacy.h \
+  /usr/local/include/ode/matrix.h /usr/local/include/ode/timer.h \
+  /usr/local/include/ode/rotation.h /usr/local/include/ode/mass.h \
+  /usr/local/include/ode/misc.h /usr/local/include/ode/objects.h \
+  /usr/local/include/ode/threading.h \
+  /usr/local/include/ode/collision_space.h \
+  /usr/local/include/ode/collision.h \
+  /usr/local/include/ode/collision_trimesh.h \
+  /usr/local/include/ode/threading_impl.h \
+  /usr/local/include/ode/export-dif.h /usr/local/include/ode/odecpp.h \
+  /usr/local/include/ode/odecpp_collision.h /usr/local/include/GL/glew.h \
+  /usr/local/include/GLFW/glfw3.h /usr/local/include/glm/glm.hpp \
   /usr/local/include/glm/detail/_fixes.hpp \
   /usr/local/include/glm/fwd.hpp \
   /usr/local/include/glm/detail/type_int.hpp \
@@ -75,20 +93,13 @@ dependencies: /Users/myfold/Documents/jumper/jumper/shapes.cpp \
   /usr/local/include/glm/integer.hpp \
   /usr/local/include/glm/detail/func_integer.hpp \
   /usr/local/include/glm/detail/func_integer.inl \
-  /usr/local/include/GLFW/glfw3.h /usr/local/include/ode/ode.h \
-  /usr/local/include/ode/odeconfig.h /usr/local/include/ode/precision.h \
-  /usr/local/include/ode/compatibility.h /usr/local/include/ode/common.h \
-  /usr/local/include/ode/error.h /usr/local/include/ode/odeinit.h \
-  /usr/local/include/ode/contact.h /usr/local/include/ode/memory.h \
-  /usr/local/include/ode/odemath.h \
-  /usr/local/include/ode/odemath_legacy.h \
-  /usr/local/include/ode/matrix.h /usr/local/include/ode/timer.h \
-  /usr/local/include/ode/rotation.h /usr/local/include/ode/mass.h \
-  /usr/local/include/ode/misc.h /usr/local/include/ode/objects.h \
-  /usr/local/include/ode/threading.h \
-  /usr/local/include/ode/collision_space.h \
-  /usr/local/include/ode/collision.h \
-  /usr/local/include/ode/collision_trimesh.h \
-  /usr/local/include/ode/threading_impl.h \
-  /usr/local/include/ode/export-dif.h /usr/local/include/ode/odecpp.h \
-  /usr/local/include/ode/odecpp_collision.h
+  /usr/local/include/glm/gtc/matrix_transform.hpp \
+  /usr/local/include/glm/gtc/../gtc/constants.hpp \
+  /usr/local/include/glm/gtc/constants.inl \
+  /usr/local/include/glm/gtc/matrix_transform.inl \
+  /usr/local/include/glm/gtc/quaternion.hpp \
+  /usr/local/include/glm/gtc/quaternion.inl \
+  /usr/local/include/glm/gtx/quaternion.hpp \
+  /usr/local/include/glm/gtx/../gtx/norm.hpp \
+  /usr/local/include/glm/gtx/norm.inl \
+  /usr/local/include/glm/gtx/quaternion.inl

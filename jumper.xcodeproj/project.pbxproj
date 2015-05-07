@@ -187,13 +187,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA17BC761AF87806007FBBE8 /* model.cpp in Sources */,
-				AA17BC721AF87737007FBBE8 /* camera.cpp in Sources */,
-				AA17BC6F1AF876CC007FBBE8 /* shader.cpp in Sources */,
-				AA17BC6C1AF87602007FBBE8 /* scene.cpp in Sources */,
 				AA17BC821AF9BAA2007FBBE8 /* objects.cpp in Sources */,
 				AAEC325E1AF83A8B00CF91C5 /* main.cpp in Sources */,
+				AA17BC6F1AF876CC007FBBE8 /* shader.cpp in Sources */,
+				AA17BC721AF87737007FBBE8 /* camera.cpp in Sources */,
+				AA17BC761AF87806007FBBE8 /* model.cpp in Sources */,
 				AA17BC851AF9BC00007FBBE8 /* shapes.cpp in Sources */,
+				AA17BC6C1AF87602007FBBE8 /* scene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

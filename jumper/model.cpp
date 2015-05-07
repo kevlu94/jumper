@@ -1,11 +1,5 @@
+#include "globals.hpp"
 #include "model.hpp"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-
 
 
 using namespace std;
@@ -36,11 +30,6 @@ glm::mat4 Model::model() const
 }
 
 
-
-// Private functions
-
-
-
 void Model::setAttribute(GLuint program, const GLchar *name, unsigned int size, GLuint vbo) const
 {
     GLint attribLoc = glGetAttribLocation(program, name);
@@ -54,7 +43,17 @@ void Model::setAttribute(GLuint program, const GLchar *name, unsigned int size, 
                           (void*)0);
 }
 
-
+glm::vec3 Creature::centerOfMass() const
+{
+    glm::vec3 ret(0.0f);
+    dReal totalMass = 0.0f;
+    for (unsigned int i = 0; i < m_parts.size(); i++)
+    {
+        ret += (m_parts[i]->mass() * m_parts[i]->position());
+        totalMass += m_parts[i]->mass();
+    }
+    return (ret / totalMass);
+}
 
 
 
