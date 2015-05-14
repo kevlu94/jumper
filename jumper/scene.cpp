@@ -85,11 +85,11 @@ void Scene::nearCallback (dGeomID o1, dGeomID o2)
     dContact contact;
     contact.surface.mode = dContactBounce | dContactSoftCFM;
     // friction parameter
-    contact.surface.mu = 1000;
+    contact.surface.mu = 10000;
     // bounce is the amount of "bouncyness".
-    contact.surface.bounce = 0.3;
+    contact.surface.bounce = 0.01;
     // bounce_vel is the minimum incoming velocity to cause a bounce
-    contact.surface.bounce_vel = 0.1;
+    contact.surface.bounce_vel = 1.0;
     // constraint force mixing parameter
     contact.surface.soft_cfm = 0.001;
     if (dCollide (o1,o2,1,&contact.geom,sizeof(dContact)))
@@ -123,9 +123,17 @@ void Scene::update()
     double dt = 0.0025f;
     double rendertime = elapsedTime();
     int steps = rendertime / dt + 1;
+    static int inputTimer = 0;
+    static int outputTimer = 0;
+    static int outputsRemaining = 100;
+    int inputPeriod = 100;
+    int outputPeriod = 25;
     for (int i = 0; i < steps; i++)
     {
-        m_creature->move(m_window);
+        if (outputsRemaining && ((inputTimer = (inputTimer + 1) % inputPeriod) == 1))
+        {
+            m_creature->takeInput();
+        }
         
         // resolve collisions
         dSpaceCollide (m_spaceID, this, passthroughCB);
@@ -133,6 +141,14 @@ void Scene::update()
         dWorldStep(m_worldID, dt);
         // reset contact joints
         dJointGroupEmpty(m_contactGroupID);
+        
+        if (outputsRemaining && ((outputTimer = (outputTimer + 1) % outputPeriod) == 1))
+        {
+            m_creature->printOutput();
+            outputsRemaining--;
+            if (!outputsRemaining)
+                printf("END\n");
+        }
     }
     double updatetime = elapsedTime();
     double wait = steps * dt - updatetime - rendertime;

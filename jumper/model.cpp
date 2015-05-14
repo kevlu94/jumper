@@ -26,7 +26,7 @@ glm::mat4 Model::model() const
                                          0.0f, 0.0f, 0.0f, 1.0f);
                                          
     glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), position());
-    return translateMatrix * rotationMatrix;
+    return (translateMatrix * rotationMatrix);
 }
 
 

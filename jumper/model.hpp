@@ -24,6 +24,7 @@ public:
     
     // accessor functions
     dReal mass() const { return m_mass.mass; }
+    glm::vec3 size() const { return m_size; }
     GLuint positionVBO() const { return m_positionVBO; }
     GLuint colorVBO() const { return m_colorVBO; }
     GLuint textureVBO() const { return m_textureVBO; }
@@ -53,7 +54,10 @@ public:
     virtual ~Creature() {}
     virtual void addToScene(Scene *scene, glm::vec3 position) = 0;
     virtual void move(GLFWwindow *window) = 0;
+    virtual void takeInput() = 0;
+    virtual void printOutput() = 0;
     glm::vec3 centerOfMass() const;
+
 protected:
     glm::vec3 m_size;
     std::vector<Model*> m_parts;
