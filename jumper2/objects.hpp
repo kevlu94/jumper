@@ -33,14 +33,7 @@ public:
     virtual ~Human() {}
     virtual void addToScene(Scene *scene, glm::vec3 position);
     virtual void move(GLFWwindow *window);
-    virtual void takeInput();
-    virtual void printOutput();
-    bool balanced() const;
-private:
-    std::vector<glm::vec3> pivots() const;
-    bool feetDown() const;
-    
-    ColoredBox m_head;
+//private:
     ColoredBox m_torso;
     ColoredBox m_leftUpperArm;
     ColoredBox m_rightUpperArm;
@@ -52,7 +45,6 @@ private:
     ColoredBox m_rightLowerLeg;
     ColoredBox m_leftFoot;
     ColoredBox m_rightFoot;
-    dJointID m_neckID;
     dJointID m_leftShoulderID;
     dJointID m_rightShoulderID;
     dJointID m_leftElbowID;

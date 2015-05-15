@@ -1,7 +1,27 @@
 #include "scene.hpp"
 
+Scene::Scene(){
+
+}
 
 Scene::Scene(Camera *camera, GLuint program)
+{
+    m_camera = camera;
+    m_window = camera->window();
+    m_program = program;
+    
+    // default projection matrix
+    m_projection_matrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    
+    // Initialize world for ODE
+    dInitODE();
+    m_worldID = dWorldCreate();
+    dWorldSetGravity(m_worldID, 0.0f, -9.8f, 0.0f);
+    m_spaceID = dHashSpaceCreate(0);
+    m_contactGroupID = dJointGroupCreate(0);
+}
+
+void Scene::setScene(Camera *camera, GLuint program)
 {
     m_camera = camera;
     m_window = camera->window();
@@ -85,11 +105,11 @@ void Scene::nearCallback (dGeomID o1, dGeomID o2)
     dContact contact;
     contact.surface.mode = dContactBounce | dContactSoftCFM;
     // friction parameter
-    contact.surface.mu = 10000;
+    contact.surface.mu = 1000;
     // bounce is the amount of "bouncyness".
-    contact.surface.bounce = 0.01;
+    contact.surface.bounce = 0.3;
     // bounce_vel is the minimum incoming velocity to cause a bounce
-    contact.surface.bounce_vel = 1.0;
+    contact.surface.bounce_vel = 0.1;
     // constraint force mixing parameter
     contact.surface.soft_cfm = 0.001;
     if (dCollide (o1,o2,1,&contact.geom,sizeof(dContact)))
@@ -120,20 +140,18 @@ void Scene::update()
 {
     //moveModel(m_models[0]);
     
-    double dt = 0.0025f;
+    double dt = 0.05f; //0.0025f;
+    /*
     double rendertime = elapsedTime();
     int steps = rendertime / dt + 1;
-    static int inputTimer = 0;
-    static int outputTimer = 0;
-    static int outputsRemaining = 100;
-    int inputPeriod = 100;
-    int outputPeriod = 25;
     for (int i = 0; i < steps; i++)
     {
-        if (outputsRemaining && ((inputTimer = (inputTimer + 1) % inputPeriod) == 1))
-        {
-            m_creature->takeInput();
-        }
+    */
+        glm::vec3 com;
+        com= m_creature->centerOfMass();
+        printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
+    
+        m_creature->move(m_window);
         
         // resolve collisions
         dSpaceCollide (m_spaceID, this, passthroughCB);
@@ -141,19 +159,17 @@ void Scene::update()
         dWorldStep(m_worldID, dt);
         // reset contact joints
         dJointGroupEmpty(m_contactGroupID);
-        
-        if (outputsRemaining && ((outputTimer = (outputTimer + 1) % outputPeriod) == 1))
-        {
-            m_creature->printOutput();
-            outputsRemaining--;
-            if (!outputsRemaining)
-                printf("END\n");
-        }
+    
+        com=m_creature->centerOfMass();
+        printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
+    /*
     }
     double updatetime = elapsedTime();
     double wait = steps * dt - updatetime - rendertime;
     if (wait < 0) wait = 0;
     usleep(wait * 1000000);
+    */
+    
 }
 
 void Scene::draw()
@@ -169,12 +185,10 @@ void Scene::draw()
         glBindBuffer(GL_ARRAY_BUFFER, model->positionVBO());
         glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, &(MVP(model))[0][0]);
         model->setAttribute(m_program, "vertexPosition", 3, model->positionVBO());
-        
         if (model->colored())
         {
             model->setAttribute(m_program, "vertexColor", 3, model->colorVBO());
         }
-        
         if (model->textured())
         {
             glActiveTexture(GL_TEXTURE0);
@@ -182,7 +196,6 @@ void Scene::draw()
             glUniform1i(glGetUniformLocation(m_program, "textureSampler"), 0);
             model->setAttribute(m_program, "vertexTexture", 2, model->textureVBO());
         }
-        
         
         glDrawArrays(GL_TRIANGLES, 0, (int) model->numVertices());
     }

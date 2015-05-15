@@ -1,10 +1,4 @@
-//
-//  main.cpp
-//  jumper
-//
-//  Created by Kevin on 5/4/15.
-//  Copyright (c) 2015 UCLA. All rights reserved.
-//
+#include "interface.hpp"
 
 #include "scene.hpp"
 #include "common/shader.hpp"
@@ -16,6 +10,7 @@
 using namespace glm;
 
 GLFWwindow* window;
+//GLuint program;
 
 int initializeGL()
 {
@@ -66,12 +61,16 @@ int initializeGL()
     return 0;
 }
 
-
-int main()
+GLuint initilizeSimulator(GLuint *pVertexArrayID, Scene *pScene)
 {
+    
     // prepare GL environment
-    if (initializeGL() == -1)
-        return -1;
+    initializeGL();
+    //if (initializeGL() == -1)
+    //    return NULL;
+    
+    
+    //printf("");
     
     // prepare vertex/fragment shader programs
     GLuint program;
@@ -80,42 +79,105 @@ int main()
     
     // initialize camera, scene, and objects to draw
     Camera camera(window, vec3(0,8,20), 0.0f, 0.0f);
-    Scene scene(&camera, program);
+    // scene(&camera, program);
+    pScene->setScene(&camera, program);
     
     Human human(glm::vec3(0.0f));
-    scene.addCreature(&human, glm::vec3(0.0f, 5.0f, 0.0f));
+    pScene->addCreature(&human, glm::vec3(0.0f, 5.0f, 0.0f));
     
     
     ColoredImmovableBox ground(glm::vec3(0.4f, 0.8f, 0.5f), glm::vec3(100.0f, 10.0f, 100.0f));
-    scene.addModel(&ground, glm::vec3(0.0f, -8.0f, 0.0f));
+    pScene->addModel(&ground, glm::vec3(0.0f, -11.0f, 0.0f));
     
     // create vertex array
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+    //GLuint VertexArrayID;
+    glGenVertexArrays(1, pVertexArrayID);
+    glBindVertexArray(*pVertexArrayID);
     
-    fprintf(stderr, "error code before loop: %x\n", glGetError());
+    //fprintf(stderr, "error code before loop: %x\n", glGetError());
+
+
+    
+    //printf("Time to close\n");
+    
+    //closeSimulator(program,&VertexArrayID);
+    
+    //return scene;
+    
+    return program;
+}
+
+void runSimulator(Scene *pScene){
     
     int error = 0;
     // continuously draw the scene we've created
     while(glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
+        //
     {
-        //scene.draw();
-        if ((error = glGetError()))
-        {
-            fprintf(stderr, "error: %x\n", error);
-            break;
-        }
-        //camera.update();
-        scene.update();
+        //camera.update(); // move camera with keys
+        
+        pScene->update(); //<--------------------
+        
+        pScene->draw(); //<--------------------
+        
+        /*
+         if ((error = glGetError()))
+         {
+         fprintf(stderr, "error: %x\n", error);
+         break;
+         }
+         */
     }
+}
+
+/*
+
+// given a target angle
+void runSimulator(Scene scene,double *knee_angle, double *knee_velocity, double *hip_angle, double *hip_velocity) {
     
+    double k1=2;
+    double k2=0.05;
+    
+    
+    double cur_knee_angle=dJointGetHingeAngle(scene.m_creature->m_leftKneeID);
+    //double cur_knee_velocity=dJointGetHingeAngleRate(m_leftKneeID);
+    double cur_hip_angle=dJointGetHingeAngle(scene.m_creature->m_leftFemoralID);
+    //double cur_hip_velocity=dJointGetHingeAngleRate(m_leftFemoralID);
+    
+    dReal torqueKnee = k1*(*knee_angle-cur_knee_angle)+k2*(*knee_velocity);
+    dReal torqueHip = k1*(*hip_angle-cur_hip_angle)+k2*(*hip_velocity);
+    
+    // draw the scene
+    scene.draw();
+    
+    // symetric joints
+    scene.move(torqueKnee,torqueHip);
+    
+    // run the simulation for 1 step
+    scene.update();
+    scene.draw();
+    
+    // get the output
+    *knee_angle=dJointGetHingeAngle(m_leftKneeID);
+    *knee_velocity=dJointGetHingeAngleRate(m_leftKneeID);
+    *hip_angle=dJointGetHingeAngle(m_leftFemoralID);
+    *hip_velocity=dJointGetHingeAngleRate(m_leftFemoralID);
+    
+}
+
+int checkForFall(void){
+    // centerOfMass
+    glm::vec3 com = centerOfMass();
+    
+    return 0;
+}
+*/
+
+void closeSimulator(GLuint program, GLuint *pVertexArrayID) {
     // Cleanup shader
     glDeleteProgram(program);
-    glDeleteVertexArrays(1, &VertexArrayID);
+    glDeleteVertexArrays(1, pVertexArrayID);
     
     // Close OpenGL window and terminate GLFW
     glfwTerminate();
-    
-    return 0;
 }

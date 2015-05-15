@@ -87,27 +87,31 @@ int main()
     
     
     ColoredImmovableBox ground(glm::vec3(0.4f, 0.8f, 0.5f), glm::vec3(100.0f, 10.0f, 100.0f));
-    scene.addModel(&ground, glm::vec3(0.0f, -8.0f, 0.0f));
+    scene.addModel(&ground, glm::vec3(0.0f, -11.0f, 0.0f));
     
     // create vertex array
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
     
-    fprintf(stderr, "error code before loop: %x\n", glGetError());
+    //fprintf(stderr, "error code before loop: %x\n", glGetError());
+    
+    //glGetError();
     
     int error = 0;
     // continuously draw the scene we've created
     while(glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
-        //scene.draw();
+        camera.update();
+        scene.update();
+        scene.draw();
+        /*
         if ((error = glGetError()))
         {
             fprintf(stderr, "error: %x\n", error);
             break;
         }
-        //camera.update();
-        scene.update();
+         */
     }
     
     // Cleanup shader

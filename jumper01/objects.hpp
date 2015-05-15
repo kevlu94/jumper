@@ -8,9 +8,11 @@ class Scene;
 class ColoredBox: public ColoredCube
 {
 public:
+    ColoredBox() {}
     ColoredBox(dReal density, glm::vec3 color, glm::vec3 size): ColoredCube(color, size) { m_density = density; }
     virtual ~ColoredBox() {}
     
+    void setColoredBox(dReal density, glm::vec3 color, glm::vec3 size);
     virtual void addToScene(Scene *scene, glm::vec3 position);
     virtual glm::vec3 position() const { return *((glm::vec3*) dBodyGetPosition(m_bodyID)); }
 };
@@ -18,9 +20,11 @@ public:
 class ColoredImmovableBox: public ColoredCube
 {
 public:
+    ColoredImmovableBox() {}
     ColoredImmovableBox(glm::vec3 color, glm::vec3 size): ColoredCube(color, size) {}
     virtual ~ColoredImmovableBox() {}
 
+    void setColoredImmovableBox(glm::vec3 color, glm::vec3 size);
     virtual void addToScene(Scene *scene, glm::vec3 position);
     virtual glm::vec3 position() const { return *((glm::vec3*) dGeomGetPosition(m_geomID)); }
 };
@@ -29,18 +33,14 @@ public:
 class Human: public Creature
 {
 public:
+    Human();
     Human(glm::vec3 size);
+    
+    void setHuman(glm::vec3 size);
     virtual ~Human() {}
     virtual void addToScene(Scene *scene, glm::vec3 position);
     virtual void move(GLFWwindow *window);
-    virtual void takeInput();
-    virtual void printOutput();
-    bool balanced() const;
 private:
-    std::vector<glm::vec3> pivots() const;
-    bool feetDown() const;
-    
-    ColoredBox m_head;
     ColoredBox m_torso;
     ColoredBox m_leftUpperArm;
     ColoredBox m_rightUpperArm;
@@ -52,7 +52,6 @@ private:
     ColoredBox m_rightLowerLeg;
     ColoredBox m_leftFoot;
     ColoredBox m_rightFoot;
-    dJointID m_neckID;
     dJointID m_leftShoulderID;
     dJointID m_rightShoulderID;
     dJointID m_leftElbowID;
