@@ -18,8 +18,10 @@ public:
     Simulator();
     int initializeGL();
     void initilizeSimulator();
-    void runSimulator();
+    void runSimulator(dReal torqueKnee,dReal torqueHip, dReal *knee_angle, dReal *knee_velocity, dReal *hip_angle, dReal *hip_velocity);
     void closeSimulator();
+    bool isBalanced();
+    glm::vec3 getCenterOfMass();
 private:
     Scene scene;
     GLFWwindow* window;

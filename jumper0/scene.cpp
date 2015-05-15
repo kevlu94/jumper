@@ -60,6 +60,7 @@ void Scene::addCreature(Creature *creature, glm::vec3 position)
     m_creature = creature;
 }
 
+// not used
 void Scene::moveModel(Model *model)
 {
     dReal force = 1000.0f;
@@ -136,7 +137,7 @@ double elapsedTime()
     return ret;
 }
 
-void Scene::update()
+void Scene::update(dReal torqueKnee, dReal torqueHip)
 {
     //moveModel(m_models[0]);
     
@@ -178,12 +179,12 @@ void Scene::update()
     */
     
     double dt = 0.05f; //0.0025f;
+    
+    //com= m_creature->centerOfMass();
+    //printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
 
-    glm::vec3 com;
-    com= m_creature->centerOfMass();
-    printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
-
-    m_creature->move(m_window);
+    //m_creature->move(m_window);
+    m_creature->move(torqueKnee,torqueHip);
     
     // resolve collisions
     dSpaceCollide (m_spaceID, this, passthroughCB);
@@ -192,8 +193,9 @@ void Scene::update()
     // reset contact joints
     dJointGroupEmpty(m_contactGroupID);
 
-    com=m_creature->centerOfMass();
-    printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
+    //glm::vec3 com;
+    //com=m_creature->centerOfMass();
+    //printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
 
     
 }

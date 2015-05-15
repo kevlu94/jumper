@@ -104,10 +104,12 @@ void Simulator::initilizeSimulator()
     //return program;
 }
 
-void Simulator::runSimulator(){
+void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angle, dReal *knee_velocity, dReal *hip_angle, dReal *hip_velocity){
     
     //fprintf(stderr,"Here0\n");
-    int i;
+    //int i;
+
+    
     
     //scene.draw();
     //usleep(1000000);
@@ -119,12 +121,35 @@ void Simulator::runSimulator(){
         //fprintf(stderr,"runSimulator1\n");
         //camera.update(); // move camera with keys
     
+
     
-        scene.update(); //<--------------------
-        
-        //fprintf(stderr,"runSimulator2\n");
-        
-        scene.draw(); //<--------------------
+    /*
+    dReal cur_knee_angle;
+    dReal cur_knee_velocity;
+    dReal cur_hip_angle;
+    dReal cur_hip_velocity;
+
+    human.getJointAngels(&cur_knee_angle, &cur_knee_velocity, &cur_hip_angle, &cur_hip_velocity);
+    
+    double k1=2;
+    double k2=0.05;
+    dReal torqueKnee = k1*(*knee_angle-cur_knee_angle)+k2*(cur_knee_velocity);
+    dReal torqueHip = k1*(*hip_angle-cur_hip_angle)+k2*(cur_hip_velocity);
+    */
+    
+    
+    scene.update(torqueKnee,torqueHip); //<--------------------
+    
+    scene.draw(); //<--------------------
+    
+        //human.measureJointAngels();
+        //printf("%f %f %f %f %f %s\n", dJointGetHingeAngle(m_leftFemoralID), dJointGetHingeAngle(m_rightFemoralID), dJointGetHingeAngle(m_leftKneeID), dJointGetHingeAngle(m_rightKneeID), centerOfMass()[1], (balanced() ? "balanced" : "OFF BALANCE!"));
+
+
+
+    human.getJointAngels(knee_angle, knee_velocity, hip_angle, hip_velocity);
+    
+    
     
         /*
          if ((error = glGetError()))
@@ -137,7 +162,6 @@ void Simulator::runSimulator(){
     
     usleep(100000);
 }
-
 /*
  
  // given a target angle
@@ -180,6 +204,15 @@ void Simulator::runSimulator(){
     return 0;
  }
  */
+
+
+bool Simulator::isBalanced() {
+    return human.balanced();
+}
+
+glm::vec3 Simulator::getCenterOfMass(){
+    return human.centerOfMass();
+}
 
 void Simulator::closeSimulator() {
     // Cleanup shader

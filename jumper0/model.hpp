@@ -55,7 +55,8 @@ public:
     void setCreature(glm::vec3 size) {m_size=size;}
     virtual ~Creature() {}
     virtual void addToScene(Scene *scene, glm::vec3 position) = 0;
-    virtual void move(GLFWwindow *window) = 0;
+    //virtual void move(GLFWwindow *window) = 0;
+    virtual void move(dReal torqueKnee, dReal torqueHip) = 0;
     virtual void takeInput() = 0;
     virtual void printOutput() = 0;
     glm::vec3 centerOfMass() const;

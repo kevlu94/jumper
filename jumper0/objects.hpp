@@ -39,10 +39,12 @@ public:
     void setHuman(glm::vec3 size);
     virtual ~Human() {}
     virtual void addToScene(Scene *scene, glm::vec3 position);
-    virtual void move(GLFWwindow *window);
+    //virtual void move(GLFWwindow *window);
+    virtual void move(dReal torqueKnee, dReal torqueHip);
     virtual void takeInput();
     virtual void printOutput();
     bool balanced() const;
+    void getJointAngels(dReal *cur_knee_angle, dReal *cur_knee_velocity, dReal *cur_hip_angle, dReal *cur_hip_velocity);
     
 private:
     std::vector<glm::vec3> pivots() const;

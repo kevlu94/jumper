@@ -19,7 +19,7 @@ public:
     void setScene(Camera *camera, GLuint program); //initializer same as Scene
     void addModel(Model *model, glm::vec3 position);
     void addCreature(Creature *creature, glm::vec3 position);
-    void update();
+    void update(dReal torqueKnee,dReal torqueHip);
     void draw();
     glm::mat4 MVP(Model *model) const { return projection() * view() * model->model(); }
     

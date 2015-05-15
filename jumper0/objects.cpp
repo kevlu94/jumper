@@ -247,12 +247,11 @@ void Human::addToScene(Scene *scene, glm::vec3 position)
 }
 
 
-void Human::move(GLFWwindow *window)
+void Human::move(dReal torqueKnee, dReal torqueHip)
 {
     //dReal torque = 50.0f;
     
-    dReal torqueKnee=10.0f;
-    dReal torqueHip=0.0f; //50.0f;
+
     
     dJointAddHingeTorque (m_leftKneeID, torqueKnee);
     dJointAddHingeTorque (m_rightKneeID, torqueKnee);
@@ -321,6 +320,12 @@ void Human::move(GLFWwindow *window)
     */
 }
 
+void Human::getJointAngels(dReal *cur_knee_angle, dReal *cur_knee_velocity, dReal *cur_hip_angle, dReal *cur_hip_velocity){
+    *cur_knee_angle=dJointGetHingeAngle(m_leftKneeID);
+    *cur_knee_velocity=dJointGetHingeAngleRate(m_leftKneeID);
+    *cur_hip_angle=dJointGetHingeAngle(m_leftFemoralID);
+    *cur_hip_velocity=dJointGetHingeAngleRate(m_leftFemoralID);
+}
 
 void Human::takeInput()
 {
@@ -368,4 +373,38 @@ glm::vec3 normal(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3)
     glm::vec3 v1 = p2 - p1;
     glm::vec3 v2 = p3 - p2;
     return glm::cross(v1, v2);
+}
+
+bool Human::feetDown() const
+{
+    std::vector<glm::vec3> p = pivots();
+    unsigned long psize = p.size();
+    for (unsigned long i = 0; i < psize; i++)
+    {
+        if (normal(p[i], p[(i+1) % psize], p[(i+2) % psize])[1] < 0)
+            return false;
+    }
+    return true;
+}
+
+bool Human::balanced() const
+{
+    if (!feetDown())
+        return false;
+    
+    glm::vec3 com = centerOfMass();
+    com[1] = 0.0f;
+    std::vector<glm::vec3> p = pivots();
+    
+    unsigned long psize = p.size();
+    
+    for (unsigned long i = 0; i < psize; i++)
+        p[i][1] = 0.0f;
+    
+    for (unsigned long i = 0; i < psize; i++)
+    {
+        if (normal(p[i], p[(i+1) % psize], com)[1] < 0)
+            return false;
+    }
+    return true;
 }
