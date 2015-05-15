@@ -185,6 +185,7 @@ void Scene::update(dReal torqueKnee, dReal torqueHip)
 
     //m_creature->move(m_window);
     m_creature->move(torqueKnee,torqueHip);
+    //m_creature->takeInput(dReal torqueKnee, dReal torqueHip);
     
     // resolve collisions
     dSpaceCollide (m_spaceID, this, passthroughCB);

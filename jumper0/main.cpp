@@ -9,7 +9,7 @@
 #include "interface.hpp"
 #include "scene.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
     //fprintf(stderr,"first line\n");
     //usleep(10000000);
@@ -36,6 +36,8 @@ int main()
     
     Simulator sim;
     
+    FILE *f;
+    
     //fprintf(stderr,"--> before init\n");
     
     
@@ -43,17 +45,23 @@ int main()
     //program=initilizeSimulator(&VertexArrayID,&scene);
     
     //fprintf(stderr,"--> init complete\n");
+    f=fopen(argv[1],"r");
     
     int i;
-    for (i=0; i<100; i++) {
+    //for (i=0; i<100; i++) {
+    while(!feof(f)) {
         // network
         // inputs: knee_angle, knee_velocity, hip_angle, hip_velocity,
         // outputs: out1, out2 [between 0,1]
         
         // net outputs torques (after scaling and offset)
         // scaled from the ouputs of the network
-        torqueKnee=-5.0f; //out1*scale1-offset1
-        torqueHip=0.0f; //out2*scale2-offset2
+        //torqueKnee=-5.0f; //out1*scale1-offset1
+        //torqueHip=0.0f; //out2*scale2-offset2
+        
+        fscanf(f,"%f %f\n",&torqueKnee,&torqueHip);
+        
+        printf("torques: %f %f\n",torqueKnee,torqueHip);
         
         // net outputs change in torques
         // ?
@@ -81,7 +89,6 @@ int main()
         // applies the torques, measures the resulting angles adn rates
         sim.runSimulator(torqueKnee,torqueHip, &knee_angle, &knee_velocity, &hip_angle, &hip_velocity);
         
-        printf("torques: %f %f\n",torqueKnee,torqueHip);
         glm::vec3 com;
         com=sim.getCenterOfMass();
         printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
@@ -95,6 +102,8 @@ int main()
     //fprintf(stderr,"--> run complete\n");
     
     sim.closeSimulator();
-    
+
+    fclose(f);
+
     return 0;
 }
