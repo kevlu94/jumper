@@ -84,7 +84,7 @@ void Simulator::initilizeSimulator()
     scene.setScene(&camera, program);
     
     human.setHuman(glm::vec3(0.0f));
-    scene.addCreature(&human, glm::vec3(0.0f, 0.0f, 0.0f));
+    scene.addCreature(&human, glm::vec3(0.0f, 5.0f, 0.0f));
     
     ground.setColoredImmovableBox(glm::vec3(0.4f, 0.8f, 0.5f), glm::vec3(100.0f, 10.0f, 100.0f));
     scene.addModel(&ground, glm::vec3(0.0f, -11.0f, 0.0f));
@@ -140,11 +140,8 @@ void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angl
     
     scene.update(torqueKnee,torqueHip); //<--------------------
     
-    static int i = 0;
+    //scene.draw(); //<--------------------
     
-    if ((i=(i+1)%20) == 1)
-    {scene.draw(); //<--------------------
-    }
         //human.measureJointAngels();
         //printf("%f %f %f %f %f %s\n", dJointGetHingeAngle(m_leftFemoralID), dJointGetHingeAngle(m_rightFemoralID), dJointGetHingeAngle(m_leftKneeID), dJointGetHingeAngle(m_rightKneeID), centerOfMass()[1], (balanced() ? "balanced" : "OFF BALANCE!"));
 
@@ -163,7 +160,7 @@ void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angl
          */
 //    }
     
-    usleep(100000);
+    //usleep(100000);
 }
 /*
  

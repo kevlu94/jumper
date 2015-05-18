@@ -178,15 +178,13 @@ void Scene::update(dReal torqueKnee, dReal torqueHip)
     usleep(wait * 1000000);
     */
     
-    double dt = 0.005f; //0.0025f;
+    double dt = 0.05f; //0.0025f;
     
     //com= m_creature->centerOfMass();
     //printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
 
-    
     //m_creature->move(m_window);
     m_creature->move(torqueKnee,torqueHip);
-    //m_creature->takeInput(dReal torqueKnee, dReal torqueHip);
     
     // resolve collisions
     dSpaceCollide (m_spaceID, this, passthroughCB);
@@ -194,6 +192,7 @@ void Scene::update(dReal torqueKnee, dReal torqueHip)
     dWorldStep(m_worldID, dt);
     // reset contact joints
     dJointGroupEmpty(m_contactGroupID);
+
     //glm::vec3 com;
     //com=m_creature->centerOfMass();
     //printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
