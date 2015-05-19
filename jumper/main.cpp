@@ -69,11 +69,13 @@ int initializeGL()
 
 int main()
 {
+    bool RENDER_OFF = true;
+    
     // prepare GL environment
     if (initializeGL() == -1)
         return -1;
     
-    // prepare vertex/fragment shader programs
+    //kiprepare vertex/fragment shader programs
     GLuint program;
     program = LoadShaders( "shaders/vertexshader", "shaders/fragmentshader" );
     glUseProgram(program);
@@ -100,13 +102,13 @@ int main()
     // continuously draw the scene we've created
     while(glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)
     {
-        //scene.draw();
+        scene.draw();
         if ((error = glGetError()))
         {
             fprintf(stderr, "error: %x\n", error);
             break;
         }
-        //camera.update();
+        camera.update();
         scene.update();
     }
     

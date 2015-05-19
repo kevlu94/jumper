@@ -50,6 +50,11 @@ m_rightFoot(1.0f, glm::vec3(0.0f, 0.0f, 0.9f), glm::vec3(0.3f, 0.1f, 0.7f))
     m_parts.push_back(&m_rightFoot);
 }
 
+double radians(double degrees)
+{
+    return degrees / 180.0 * 3.14159;
+}
+
 void Human::addToScene(Scene *scene, glm::vec3 position)
 {
     scene->addModel(&m_head, position + glm::vec3(0.0f, 7.7f, -0.1f));
@@ -114,28 +119,28 @@ void Human::addToScene(Scene *scene, glm::vec3 position)
     dJointSetHingeAxis (m_leftFemoralID, 1.0f, 0.0f, 0.0f);
     dJointSetHingeAxis (m_rightFemoralID, 1.0f, 0.0f, 0.0f);
     
-    dJointSetHingeParam(m_leftShoulderID, dParamHiStop, 0.5);
-    dJointSetHingeParam(m_rightShoulderID, dParamHiStop, 0.5);
-    dJointSetHingeParam(m_leftShoulderID, dParamLoStop, -3);
-    dJointSetHingeParam(m_rightShoulderID, dParamLoStop, -3);
+    dJointSetHingeParam(m_leftShoulderID, dParamHiStop, radians(30));
+    dJointSetHingeParam(m_rightShoulderID, dParamHiStop, radians(30));
+    dJointSetHingeParam(m_leftShoulderID, dParamLoStop, radians(-150));
+    dJointSetHingeParam(m_rightShoulderID, dParamLoStop, radians(-150));
     
     
     
-    dJointSetHingeParam (m_leftAnkleID, dParamLoStop, -0.5);
-    dJointSetHingeParam (m_rightAnkleID, dParamLoStop, -0.5);
-    dJointSetHingeParam (m_leftAnkleID, dParamHiStop, 0.5);
-    dJointSetHingeParam (m_rightAnkleID, dParamHiStop, 0.5);
+    dJointSetHingeParam (m_leftAnkleID, dParamLoStop, radians(-30));
+    dJointSetHingeParam (m_rightAnkleID, dParamLoStop, radians(-30));
+    dJointSetHingeParam (m_leftAnkleID, dParamHiStop, radians(30));
+    dJointSetHingeParam (m_rightAnkleID, dParamHiStop, radians(30));
     
-    dJointSetHingeParam (m_leftFemoralID, dParamLoStop, -2.5);
-    dJointSetHingeParam (m_rightFemoralID, dParamLoStop, -2.5);
-    dJointSetHingeParam (m_leftFemoralID, dParamHiStop, 0.1);
-    dJointSetHingeParam (m_rightFemoralID, dParamHiStop, 0.1);
+    dJointSetHingeParam (m_leftFemoralID, dParamLoStop, radians(-120));
+    dJointSetHingeParam (m_rightFemoralID, dParamLoStop, radians(-120));
+    dJointSetHingeParam (m_leftFemoralID, dParamHiStop, radians(15));
+    dJointSetHingeParam (m_rightFemoralID, dParamHiStop, radians(15));
     
     
-    dJointSetHingeParam (m_leftKneeID, dParamLoStop, -0.1);
-    dJointSetHingeParam (m_rightKneeID, dParamLoStop, -0.1);
-    dJointSetHingeParam (m_leftKneeID, dParamHiStop, 3);
-    dJointSetHingeParam (m_rightKneeID, dParamHiStop, 3);
+    dJointSetHingeParam (m_leftKneeID, dParamLoStop, radians(-15));
+    dJointSetHingeParam (m_rightKneeID, dParamLoStop, radians(-15));
+    dJointSetHingeParam (m_leftKneeID, dParamHiStop, radians(150));
+    dJointSetHingeParam (m_rightKneeID, dParamHiStop, radians(150));
     
     
     // for debugging
