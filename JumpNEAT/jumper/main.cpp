@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         
         fscanf(f,"%f %f\n",&torqueKnee,&torqueHip);
         
-        printf("torques: %f %f\n",torqueKnee,torqueHip);
+        //printf("torques: %f %f\n",torqueKnee,torqueHip);
         
         // net outputs change in torques
         // ?
@@ -93,14 +93,11 @@ int main(int argc, char *argv[])
         // applies the torques, measures the resulting angles adn rates
         sim.runSimulator(torqueKnee,torqueHip, &knee_angle, &knee_velocity, &hip_angle, &hip_velocity);
         
-        glm::vec3 com;
-        com=sim.getCenterOfMass();
-        printf("center of mass: (%f, %f, %f)\n", com[0], com[1], com[2]);
-        printf("angels: (%f, %f, %f %f)\n", knee_angle, knee_velocity, hip_angle, hip_velocity);
-        
         // test and kill off pupulation
         if (!sim.isBalanced())
             printf("Out of Balance\n");
+        if (sim.failed())
+            printf("Crashed!\n");
     }
     
     //fprintf(stderr,"--> run complete\n");

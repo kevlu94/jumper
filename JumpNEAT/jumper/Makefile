@@ -20,6 +20,9 @@ learn:
 jump:
 	./jumper output.txt
 
+stand:
+	./jumper stand.txt
+
 clean:
 	rm learner jumper
 

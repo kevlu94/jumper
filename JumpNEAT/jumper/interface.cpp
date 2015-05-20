@@ -96,6 +96,7 @@ void Simulator::initilizeSimulator()
     
     ground.setColoredImmovableBox(glm::vec3(0.4f, 0.8f, 0.5f), glm::vec3(100.0f, 10.0f, 100.0f));
     scene.addModel(&ground, glm::vec3(0.0f, -10.0f, 0.0f));
+    scene.addGeomToB(ground.geomID());
 }
 
 void Simulator::closeSimulator() {
@@ -138,7 +139,7 @@ void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angl
     
     scene.update(torqueKnee,torqueHip); //<--------------------
     
-    if (render) scene.draw();
+    //if (render) scene.draw();
     
         //human.measureJointAngels();
         //printf("%f %f %f %f %f %s\n", dJointGetHingeAngle(m_leftFemoralID), dJointGetHingeAngle(m_rightFemoralID), dJointGetHingeAngle(m_leftKneeID), dJointGetHingeAngle(m_rightKneeID), centerOfMass()[1], (balanced() ? "balanced" : "OFF BALANCE!"));

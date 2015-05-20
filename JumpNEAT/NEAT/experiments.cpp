@@ -592,7 +592,7 @@ int go_cart(Network *net,int max_steps,int thresh, std::vector<std::pair<float, 
        
        /*--- Check for failure.  If so, return steps ---*/
        // if the center of mass outside the box
-       if (!sim.isBalanced()) {
+       if (!sim.isBalanced() || sim.failed()) {
            //cerr << "Before close" <<endl;
            sim.closeSimulator();
            return steps;

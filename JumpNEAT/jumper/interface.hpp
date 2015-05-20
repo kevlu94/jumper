@@ -21,6 +21,7 @@ public:
     void runSimulator(dReal torqueKnee,dReal torqueHip, dReal *knee_angle, dReal *knee_velocity, dReal *hip_angle, dReal *hip_velocity);
     void closeSimulator();
     bool isBalanced();
+    bool failed() { return scene.failed(); }
     glm::vec3 getCenterOfMass();
 private:
     bool m_render = false;

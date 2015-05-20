@@ -8,6 +8,7 @@
 #include "model.hpp"
 
 #include <unordered_map>
+#include <unordered_set>
 
 
 class Scene
@@ -32,7 +33,10 @@ public:
     void nearCallback(dGeomID o1, dGeomID o2);
     void setOwner(dGeomID geom, Creature *creature);
     Creature *owner(dGeomID geom);
-    
+
+    bool failed() const { return m_failed; }
+    void addGeomToA(dGeomID geom) { m_geomsA.insert(geom); }
+    void addGeomToB(dGeomID geom) { m_geomsB.insert(geom); }
 private:
     
     // private functions
@@ -53,6 +57,10 @@ private:
     dJointGroupID m_contactGroupID;
 
     std::unordered_map<dGeomID, Creature*> m_geomMap;
+
+    bool m_failed = false;
+    std::unordered_set<dGeomID> m_geomsA;
+    std::unordered_set<dGeomID> m_geomsB;
 };
 
 

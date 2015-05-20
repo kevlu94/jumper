@@ -97,6 +97,12 @@ void Scene::nearCallback (dGeomID o1, dGeomID o2)
     if (owner(o1) == owner(o2))
         return;
 
+    if (((m_geomsA.find(o1) != m_geomsA.end()) &&
+        (m_geomsB.find(o2) != m_geomsB.end())) ||
+        ((m_geomsA.find(o2) != m_geomsA.end()) &&
+        (m_geomsB.find(o1) != m_geomsB.end())))
+        m_failed = true;
+
     dBodyID b1 = dGeomGetBody(o1);
     dBodyID b2 = dGeomGetBody(o2);
     dContact contact;
@@ -136,9 +142,16 @@ double elapsedTime()
 void Scene::update(dReal torqueKnee, dReal torqueHip)
 {
     double dt = 0.005f;
+    int stepsPerInput = 40;
+    int stepsPerRender = 5;
     
-    for (int i = 0; i < 10; i++)
+    //if (render) elapsedTime();
+
+    for (int i = 0; i < stepsPerInput; i++)
     {
+        if (render && ((i % stepsPerRender) == 0))
+            draw();
+
         m_creature->move(torqueKnee,torqueHip);
         
         // resolve collisions
@@ -148,6 +161,14 @@ void Scene::update(dReal torqueKnee, dReal torqueHip)
         // reset contact joints
         dJointGroupEmpty(m_contactGroupID);
     }
+
+    //if (render)
+    //{
+    //    usleep(dt * 1000000 * stepsPerInput - elapsedTime());
+    //}
+
+
+
 }
 
 void Scene::draw()

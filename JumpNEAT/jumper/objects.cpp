@@ -264,6 +264,18 @@ void Human::addToScene(Scene *scene, glm::vec3 position)
     //dJointSetFixed(m_rightShoulderID);
     dJointSetFixed(m_leftElbowID);
     dJointSetFixed(m_rightElbowID);
+
+
+    scene->addGeomToA(m_head.geomID());
+    scene->addGeomToA(m_torso.geomID());
+    scene->addGeomToA(m_leftUpperArm.geomID());
+    scene->addGeomToA(m_rightUpperArm.geomID());
+    scene->addGeomToA(m_leftLowerArm.geomID());
+    scene->addGeomToA(m_rightLowerArm.geomID());
+    scene->addGeomToA(m_leftUpperLeg.geomID());
+    scene->addGeomToA(m_rightUpperLeg.geomID());
+    scene->addGeomToA(m_leftLowerLeg.geomID());
+    scene->addGeomToA(m_rightLowerLeg.geomID());
 }
 
 
