@@ -440,3 +440,31 @@ bool Human::balanced() const
     }
     return true;
 }
+
+float Human::verticalVelocity(float timestep)
+{
+    static float lastVerticalPosition = -100.0f; // to initialize
+    if (lastVerticalPosition == -100.0f)
+    {
+        lastVerticalPosition = centerOfMass()[1];
+        return 0.0f;
+    }
+    float currentVerticalPosition = centerOfMass()[1];
+    float velocity = currentVerticalPosition - lastVerticalPosition;
+    lastVerticalPosition = currentVerticalPosition;
+    return velocity / timestep;
+}
+
+float Human::verticalAcceleration(float timestep)
+{
+    static float lastVerticalVelocity = -100.0f; // to initialize
+    if (lastVerticalVelocity == -100.0f)
+    {
+        lastVerticalVelocity = verticalVelocity(timestep);
+        return 0.0f;
+    }
+    float currentVerticalVelocity = verticalVelocity(timestep);
+    float acceleration = currentVerticalVelocity - lastVerticalVelocity;
+    lastVerticalVelocity = currentVerticalVelocity;
+    return acceleration / timestep;
+}

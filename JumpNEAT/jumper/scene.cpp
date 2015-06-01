@@ -141,15 +141,12 @@ double elapsedTime()
 
 void Scene::update(dReal torqueKnee, dReal torqueHip)
 {
-    double dt = 0.005f;
-    int stepsPerInput = 40;
-    int stepsPerRender = 5;
     
     //if (render) elapsedTime();
 
-    for (int i = 0; i < stepsPerInput; i++)
+    for (int i = 0; i < STEPS_PER_INPUT; i++)
     {
-        if (render && ((i % stepsPerRender) == 0))
+        if (render && ((i % STEPS_PER_RENDER) == 0))
             draw();
 
         m_creature->move(torqueKnee,torqueHip);
@@ -157,14 +154,14 @@ void Scene::update(dReal torqueKnee, dReal torqueHip)
         // resolve collisions
         dSpaceCollide (m_spaceID, this, passthroughCB);
         // update the world by the calculated time step
-        dWorldStep(m_worldID, dt);
+        dWorldStep(m_worldID, DT);
         // reset contact joints
         dJointGroupEmpty(m_contactGroupID);
     }
 
     //if (render)
     //{
-    //    usleep(dt * 1000000 * stepsPerInput - elapsedTime());
+    //    usleep(DT * 1000000 * STEPS_PER_INPUT - elapsedTime());
     //}
 
 

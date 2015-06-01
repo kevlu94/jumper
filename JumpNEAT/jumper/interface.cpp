@@ -31,13 +31,13 @@ int Simulator::initializeGL()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow( WINDOW_WIDTH, WINDOW_HEIGHT, "Picking Test", NULL, NULL);
-    if( window == NULL ){
+    m_window = glfwCreateWindow( WINDOW_WIDTH, WINDOW_HEIGHT, "Picking Test", NULL, NULL);
+    if( m_window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
         glfwTerminate();
         return -1;
     }
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(m_window);
     
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
@@ -47,7 +47,7 @@ int Simulator::initializeGL()
     }
     
     // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_FALSE);
+    glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GL_FALSE);
     
     // Dark blue background
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
@@ -88,7 +88,7 @@ void Simulator::initilizeSimulator()
     if (render) glUseProgram(program);
     
     // initialize camera, scene, and objects to draw
-    if (render) camera.setCamera(window, vec3(0,8,20), 0.0f, 0.0f);
+    if (render) camera.setCamera(m_window, vec3(20,8,5), 1.3f, 0.0f);
     if (render) scene.setScene(&camera, program);
 
     human.setHuman(glm::vec3(0.0f));
@@ -139,6 +139,11 @@ void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angl
     
     scene.update(torqueKnee,torqueHip); //<--------------------
     
+    std::cout << verticalAcceleration() << std::endl;
+
+    if (liftOff(1.0f))
+        std::cout << "LIFTOFF" << std::endl;
+
     //if (render) scene.draw();
     
         //human.measureJointAngels();
@@ -211,6 +216,19 @@ bool Simulator::isBalanced() {
 
 glm::vec3 Simulator::getCenterOfMass(){
     return human.centerOfMass();
+}
+
+bool Simulator::liftOff(float offset)
+{
+    std::vector<glm::vec3> pivots = human.pivots();
+    int length = pivots.size();
+    float totalHeight = 0.0f;
+    for (int i = 0; i < length; i++)
+    {
+        totalHeight += pivots[i][1];
+    }
+    float averageHeight = totalHeight / length;
+    return (averageHeight > offset);
 }
 
 

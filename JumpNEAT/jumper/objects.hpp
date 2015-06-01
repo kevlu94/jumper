@@ -45,11 +45,13 @@ public:
     virtual void printOutput();
     bool balanced() const;
     void getJointAngles(dReal *cur_knee_angle, dReal *cur_knee_velocity, dReal *cur_hip_angle, dReal *cur_hip_velocity);
-    
-private:
+    float height() { return m_head.position()[1]; }
     std::vector<glm::vec3> pivots() const;
+    float verticalVelocity(float timestep);
+    float verticalAcceleration(float timestep);
+
+private:
     bool feetDown() const;
-    
     ColoredBox m_head;
     ColoredBox m_torso;
     ColoredBox m_leftUpperArm;

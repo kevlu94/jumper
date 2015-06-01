@@ -20,7 +20,9 @@
 
 const double WINDOW_WIDTH = 768;
 const double WINDOW_HEIGHT = 576;
-//global bool render = false;
+const float DT = 0.005f;
+const int STEPS_PER_INPUT = 40;
+const int STEPS_PER_RENDER = 5;
 
 
 

@@ -23,10 +23,15 @@ public:
     bool isBalanced();
     bool failed() { return scene.failed(); }
     glm::vec3 getCenterOfMass();
+    GLFWwindow *window() { return m_window; }
+    float humanHeight() { return human.height(); }
+    bool liftOff(float offset = 0.0f);
+    float verticalVelocity() { return human.verticalVelocity(DT * STEPS_PER_INPUT); }
+    float verticalAcceleration() { return human.verticalAcceleration(DT * STEPS_PER_INPUT); }
 private:
     bool m_render = false;
     Scene scene;
-    GLFWwindow* window;
+    GLFWwindow* m_window;
     GLuint program;
     Camera camera;
     Human human;

@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     
     int i;
     //for (i=0; i<100; i++) {
-    while(!feof(f)) {
+    while(!feof(f) && (glfwGetKey(sim.window(), GLFW_KEY_ESCAPE ) != GLFW_PRESS)) {
         // network
         // inputs: knee_angle, knee_velocity, hip_angle, hip_velocity,
         // outputs: out1, out2 [between 0,1]
