@@ -139,10 +139,10 @@ void Simulator::runSimulator(dReal torqueKnee, dReal torqueHip, dReal *knee_angl
     
     scene.update(torqueKnee,torqueHip); //<--------------------
     
-    std::cout << verticalAcceleration() << std::endl;
+    //std::cout << verticalAcceleration() << std::endl;
 
-    if (liftOff(1.0f))
-        std::cout << "LIFTOFF" << std::endl;
+    //if (liftOff(1.0f))
+    //    std::cout << "LIFTOFF" << std::endl;
 
     //if (render) scene.draw();
     
